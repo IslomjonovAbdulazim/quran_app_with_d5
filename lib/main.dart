@@ -5,7 +5,7 @@ import 'package:quran_app_with_d5/home_page.dart';
 void main() {
   runApp(
     DevicePreview(
-      enabled: true,
+      enabled: false,
       builder: (context) => QuranAppWithD5(),
     ),
   );

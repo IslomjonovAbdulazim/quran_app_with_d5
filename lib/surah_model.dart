@@ -4,7 +4,7 @@ class SurahModel {
   late String transliteration;
   late String translation;
   late String type;
-  late String totalVerses;
+  late int totalVerses;
 
   SurahModel({
     required this.id,

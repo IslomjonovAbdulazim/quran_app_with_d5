@@ -20,12 +20,21 @@ class _DetailPageState extends State<DetailPage> {
 
   @override
   void initState() {
+    load();
     super.initState();
+  }
+
+  void load() async {
+
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        centerTitle: false,
+        title: Text(widget.surah.transliteration),
+      ),
       body: SafeArea(
         child: Text(
           "Detail Page (${widget.surah.transliteration})",
