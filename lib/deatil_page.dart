@@ -1,8 +1,10 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:quran_app_with_d5/surah_model.dart';
-import 'ayah_model.dart';
 import 'package:flutter/services.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:quran_app_with_d5/ayah_model.dart';
+import 'package:quran_app_with_d5/surah_model.dart';
 
 class DetailPage extends StatefulWidget {
   final SurahModel surah;
@@ -17,6 +19,7 @@ class DetailPage extends StatefulWidget {
 }
 
 class _DetailPageState extends State<DetailPage> {
+  List<AyahModel> ayahs = [];
 
   @override
   void initState() {
@@ -25,7 +28,10 @@ class _DetailPageState extends State<DetailPage> {
   }
 
   void load() async {
-
+    String data = await rootBundle.loadString("assets/saheeh.json");
+    List jsonList = List.from(jsonDecode(data))[widget.surah.id - 1]["verses"];
+    ayahs = jsonList.map((json) => AyahModel.fromJson(json)).toList();
+    setState(() {});
   }
 
   @override
@@ -36,11 +42,29 @@ class _DetailPageState extends State<DetailPage> {
         title: Text(widget.surah.transliteration),
       ),
       body: SafeArea(
-        child: Text(
-          "Detail Page (${widget.surah.transliteration})",
-          style: GoogleFonts.poppins(
-            fontSize: 30,
-          ),
+        child: ListView.builder(
+          padding: EdgeInsets.all(15),
+          itemCount: ayahs.length,
+          itemBuilder: (context, index) {
+            AyahModel verse = ayahs[index];
+            return Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Align(
+                  alignment: Alignment.centerRight,
+                  child: Text(
+                    verse.text,
+                    textDirection: TextDirection.rtl,
+                    style: GoogleFonts.amiri(
+                      fontSize: 22,
+                      height: 2.5,
+                    ),
+                  ),
+                ),
+                Text(verse.translation),
+              ],
+            );
+          },
         ),
       ),
     );
